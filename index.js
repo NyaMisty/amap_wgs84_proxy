@@ -29,8 +29,6 @@ const ol = {
     proj: require('ol/proj'),
     layer: require('ol/layer'),
     source: require('ol/source'),
-    map: require('ol/map'),
-    tilegrid: require('ol/tilegrid'),
 }
 
 import { GCJ02 } from 'ol-proj-ch';
