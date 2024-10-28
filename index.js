@@ -72,16 +72,25 @@ ol.proj.addCoordinateTransforms(
     (x) => GCJ02.toEPSG3857(merc2ll(x))
 );
 
-const amap_layer = new ol.layer.Tile({
-    opacity: 1.0, // let OsmAnd handle transparency
-    source: new ol.source.XYZ({
-        projection: "gcj02",
-        url:
+function getRenderLayer() {
+    let amap_layer = new ol.layer.Tile({
+        opacity: 1.0, // let OsmAnd handle transparency
+        source: new ol.source.XYZ({
+            projection: "gcj02",
+            url:
             // "http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}"
-            "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8"
-    })
-});
-const renderLayer = amap_layer.createRenderer()
+                "http://wprd0{1-4}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=8"
+        })
+    });
+    let renderLayer = amap_layer.createRenderer()
+    return renderLayer
+}
+
+let renderLayer = getRenderLayer()
+// reset layer source periodically to avoid too much cache (tile cache is in ol.source.XYZ)
+setInterval(function() {
+    renderLayer = getRenderLayer()
+}, 60000)
 
 async function getTile(x, y, z) {
     // console.log(renderLayer);
